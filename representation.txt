@@ -13,6 +13,7 @@ int main() {
 	}
 	return 0;
 }
+SC: O(N * M)
 **representation of graph in list**
 int main() {
     int n = 0;
@@ -33,3 +34,4 @@ int main() {
     }
     return 0;
 }
+SC: O(2E)
