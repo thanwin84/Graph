@@ -25,3 +25,4 @@ class Solution {
         return bfs;
     }
 }; 
+// TC: O(N) + O(2E) where N is for inner loop and 2E is for total edges.
