@@ -2,7 +2,7 @@ from collections import deque
 
 class Solution:
     def __init__(self):
-        # count 1s that are connect with boundary 1
+        # count 1s that are connected with boundary 1
         self.count = 0
 
     def isValid(self, grid, row, col):
