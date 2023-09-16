@@ -22,3 +22,5 @@ class Solution:
      
                 
         return stack[::-1]
+
+# TC: O(V) + O(2E) Space: O(V)
