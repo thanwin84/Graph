@@ -7,6 +7,7 @@ class Solution:
         ordering = []
         indegrees = [0 for _ in range(V)]
         for current in range(V):
+            # current node --> toAdjacentnode[this is indegree in toAdjacentNode]
             for toAdjacentNode in adj[current]:
                 indegrees[toAdjacentNode] += 1
         q = deque()
@@ -16,7 +17,7 @@ class Solution:
         
         while q:
             current = q.popleft()
-            # current node is without dependency, so push it the stack
+            # current node is without dependency, so push it into the stack
             ordering.append(current)
             # decrease indegree value of all its neighbour nodes
             for adjacentNode in adj[current]:
