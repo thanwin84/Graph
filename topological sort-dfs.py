@@ -5,8 +5,8 @@ class Solution:
             if not visited[adjacentNode]:
                 self.dfs(adjacentNode, visited, adj, stack)
                 
-        # we have already inserted nodes into stack that come after this node
-        # which ensures that u comes before v if u is directed to v
+        # by recursively,  we have already inserted nodes into stack that comes after current node
+        # which ensures that U comes before V if U is directed to V
         # Now insert the current node into the stack
         stack.append(current)
         
