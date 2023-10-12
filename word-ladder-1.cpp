@@ -16,8 +16,10 @@ public:
 			}
 			for (int ind = 0; ind < word.size(); ind++) {
 				char original = word[ind];
+				// replace each index character with a -z
 				for (char ch = 'a'; ch <= 'z'; ch++) {
 					word[ind] = ch;
+					// if the new word exist in the set, push it into the q and erase it from stack
 					if (st.find(word) != st.end()) {
 						st.erase(word);
 						q.push({ word, steps + 1 });
