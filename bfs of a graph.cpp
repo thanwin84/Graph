@@ -1,28 +1,30 @@
 
 class Solution {
-  public:
+public:
     // Function to return Breadth First Traversal of given graph.
     vector<int> bfsOfGraph(int V, vector<int> adj[]) {
-        // Code here
-        int visited[V] = {0};
+        // we may visit same node twice, so need a visited array
+        vector<int> visited(V, 0);
         visited[0] = 1;
-        vector<int> bfs;
+        vector<int> bfsOrder;
         queue<int> q;
         q.push(0);
-        while (!q.empty()){
-            int node = q.front();
+        while (!q.empty()) {
+            int currentNode = q.front();
             q.pop();
-            bfs.push_back(node);
-          // Iterate through all the adjacent nodes of the current node.
-            for (auto it: adj[node]){
-              // If an adjacent node is not visited yet, mark it as visited and push it into the queue.
-                if (!visited[it]){
-                    visited[it] = true;
-                    q.push(it);
+            bfsOrder.push_back(0);
+            // explore all neighbour nodes
+            for (auto adjacentNode : adj[currentNode]) {
+                // if current adjacent node is not visited, visit it and mark it as visited
+                if (!visited[adjacentNode]) {
+                    visited[adjacentNode] = 1;
+                    q.push(adjacentNode);
                 }
             }
         }
-        return bfs;
+
+        return bfsOrder;
     }
-}; 
+};
+
 // TC: O(N) + O(2E) where N is for inner loop and 2E is for total edges.
