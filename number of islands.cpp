@@ -1,11 +1,11 @@
-class Solution {
-public:
-    bool isValidCell(int rows, int cols, int row, int col) {
+bool isValidCell(int rows, int cols, int row, int col) {
         if (row >= 0 && row < rows && col >= 0 && col < cols) {
             return true;
         }
         return false;
     }
+class Solution {
+private:
     void bfs(vector<vector<char>>& grid, vector<vector<int>>& visited, int i, int j) {
         int rows = grid.size(), cols = grid[0].size();
         queue<pair<int, int>> q;
@@ -28,6 +28,7 @@ public:
             }
         }
     }
+public:
     // Function to find the number of islands.
     int numIslands(vector<vector<char>>& grid) {
         // Code here
