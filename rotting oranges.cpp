@@ -1,48 +1,57 @@
+static bool isValidCell(vector<vector<int>>& image, int row, int col) {
+    int rows = image.size();
+    int cols = image[0].size();
+    if (row >= 0 && row < rows && col >= 0 && col < cols) {
+        return true;
+    }
+    return false;
+}
+
 class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
         int rows = grid.size();
         int cols = grid[0].size();
-        int cntFreshOrange = 0;
+        vector<vector<int>> copyOfGrid = grid;
         vector<vector<int>> visited(rows, vector<int>(cols, 0));
-        // {{row, col}, time}
         queue<pair<pair<int, int>, int>> q;
-        // at first, push all the rotter oranges in queue
-        // cause at next 1 sec, these oranges will rot adjacent oranges
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                if (grid[i][j] == 1) cntFreshOrange++;
-                if (grid[i][j] == 2) {
-                    visited[i][j] = 2;
-                    q.push({ {i, j}, 0 });
-                }
-            }
-        }
-        int time = 0;
-        // count the number of fresh oranges that got rotten 
-        int count = 0;
-        vector<vector<int>> directions = { {-1, 0}, {1, 0},{0, -1}, {0, 1} };
-        while (!q.empty()) {
-            pair<pair<int, int>, int> current = q.front();
-            q.pop();
-            int r = current.first.first;
-            int c = current.first.second;
-            int t = current.second;
-            // update time
-            time = max(time, t);
-            // rot all adjacent oranges
-            for (auto& dir : directions) {
-                int nextRow = r + dir[0];
-                int nextCol = c + dir[1];
-                if (nextRow >= 0 && nextRow < rows && nextCol >= 0 && nextCol < cols && grid[nextRow][nextCol] == 1 && visited[nextRow][nextCol] != 2) {
-                    q.push({ {nextRow, nextCol}, t + 1 });
-                    visited[nextRow][nextCol] = 2;
-                    count++;
-                }
-            }
-        }
-        if (count == cntFreshOrange) return time;
-        return -1;
 
+        // push all the rotten mangoes to the queue
+        int freshMangoes = 0;
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (grid[row][col] == 1) freshMangoes++;
+                if (grid[row][col] == 2) {
+                    q.push({{ row, col }, 0});
+                    visited[row][col] = 1;
+                }
+            }
+        }
+
+        int minutes = 0;
+        int rottenMangoes = 0;
+        while (!q.empty()) {
+            pair<pair<int, int>, int> p = q.front();
+            q.pop();
+            minutes = max(minutes, p.second);
+            vector<vector<int>> directions = { {-1, 0}, {1, 0},{0, -1}, {0, 1} };
+            for (auto & it : directions) {
+                int nextRow = p.first.first + it[0];
+                int nextCol = p.first.second + it[1];
+                if (isValidCell(grid, nextRow, nextCol) && !visited[nextRow][nextCol] && grid[nextRow][nextCol] == 1) {
+                    visited[nextRow][nextCol] = 1;
+                    copyOfGrid[nextRow][nextCol] = 2;
+                    q.push({{ nextRow, nextCol }, p.second + 1});
+                    rottenMangoes++;
+                }
+            }
+        }
+        if (freshMangoes != rottenMangoes){
+            return -1;
+        }
+
+        return minutes;
     }
+
+
 };
