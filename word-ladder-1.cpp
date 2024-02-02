@@ -1,34 +1,34 @@
 class Solution {
 public:
-	int wordLadderLength(string startWord, string targetWord, vector<string>& wordList) {
-		// first: string,second: steps
-		queue<pair<string, int>> q;
-		unordered_set<string> st(wordList.begin(), wordList.end());
-		q.push({startWord, 1});
-		st.erase(startWord);
-		while (!q.empty()) {
-			pair<string, int> Pair = q.front();
-			q.pop();
-			string word = Pair.first;
-			int steps = Pair.second;
-			if (word == targetWord) {
-				return steps;
-			}
-			for (int ind = 0; ind < word.size(); ind++) {
-				char original = word[ind];
-				// replace each index character with a -z
-				for (char ch = 'a'; ch <= 'z'; ch++) {
-					word[ind] = ch;
-					// if the new word exist in the set, push it into the q and erase it from stack
-					if (st.find(word) != st.end()) {
-						st.erase(word);
-						q.push({ word, steps + 1 });
-					}
-				}
-				word[ind] = original;
-			}
+    int wordLadderLength(string startWord, string targetWord, vector<string>& wordList) {
+        unordered_set<string> dictionary(wordList.begin(), wordList.end());
+        dictionary.erase(startWord);
+        // q.first = word and q.second = number of steps 
+        queue<pair<string, int>> q;
+        q.push({ startWord, 1 });
+        while (!q.empty()) {
+            pair<string, int> current = q.front();
+            string currentWord = current.first;
+            int steps = current.second;
+            q.pop();
+            if (currentWord == targetWord) {
+                return steps;
+            }
+            for (int i = 0; i < startWord.size(); i++) {
+                char originalChar = currentWord[i];
+                for (char ch = 'a'; ch <= 'z'; ch++) {
+                    currentWord[i] = ch;
+                    if (dictionary.find(currentWord) != dictionary.end()) {
+                        q.push({ currentWord, steps + 1});
+                        dictionary.erase(currentWord);
+                    }
+                }
+                currentWord[i] = originalChar;
+            }
+        }
+        return 0;
 
-		}
-		return 0;
-	}
+    }
 };
+
+// time complexity of O(N * M * 26), where N is the number of words in the word list, and M is the length of the words
