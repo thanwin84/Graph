@@ -1,51 +1,54 @@
 class Solution {
 public:
-    void topoSort(int currentNode, vector<int>& visited, vector<int>& stack, vector<pair<int, int>> adjList[]) {
-        visited[currentNode] = 1;
-        for (auto &adjacentNode : adjList[currentNode]) {
-            int v = adjacentNode.first;
-            if (!visited[v]) {
-                topoSort(v, visited, stack, adjList);
+    void dfs(int current, vector<vector<pair<int, int>>>& adjList, vector<int>& visited, vector<int>& nodes) {
+        visited[current] = 1;
+        for (auto& it : adjList[current]) {
+            int adjacentNode = it.first;
+            if (!visited[adjacentNode]) {
+                dfs(adjacentNode, adjList, visited, nodes);
             }
         }
-        stack.push_back(currentNode);
+        nodes.push_back(current);
     }
-
     vector<int> shortestPath(int N, int M, vector<vector<int>>& edges) {
-        // code here
-        vector<pair<int, int>> adjList[N];
-        for (int ind = 0; ind < M; ind++) {
-            int u = edges[ind][0];
-            int v = edges[ind][1];
-            int wt = edges[ind][2];
-            adjList[u].push_back({ v, wt });
+        vector<vector<pair<int, int>>> adjList(N);
+        for (auto& it : edges) {
+            int u = it[0];
+            int v = it[1];
+            int wt = it[2];
+            adjList[u].push_back({v, wt});
         }
-        // fint the toposort
-        vector<int> stack;
+        vector<int> topoSort;
         vector<int> visited(N, 0);
-        for (int ind = 0; ind < N; ind++) {
-            if (!visited[ind]) {
-                topoSort(ind, visited, stack, adjList);
+        
+        for (int i = 0; i < N; i++) {
+            if (!visited[i]) {
+                dfs(i, adjList, visited, topoSort);
             }
         }
         vector<int> distance(N, 1e9);
-        distance[0] = 0;
-        while (!stack.empty()) {
-            int node = stack.back();
-            stack.pop_back();
-            for (auto adjacentNode : adjList[node]) {
+        distance[topSort.back() - 1] = 0;
+        while (topoSort.size() > 0) {
+            int current = topoSort.back();
+            topoSort.pop_back();
+            // explore all neighbour nodes
+            for (auto& adjacentNode : adjList[current]) {
+                
                 int v = adjacentNode.first;
                 int wt = adjacentNode.second;
-                if (distance[node] + wt < distance[v]) {
-                    distance[v] = distance[node] + wt;
+                if (distance[current] + wt < distance[v]){
+                    
+                    distance[v] = distance[current] + wt;
                 }
             }
-
         }
-        for (int ind = 0; ind < N; ind++) {
-            if (distance[ind] == 1e9) distance[ind] = -1;
+        for (int i =0; i < N; i++){
+            if (distance[i] == 1e9){
+                distance[i] = -1;
+            }
         }
         return distance;
-
+            
     }
 };
+// time: O( V + E)
