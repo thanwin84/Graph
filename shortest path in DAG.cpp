@@ -52,3 +52,7 @@ public:
     }
 };
 // time: O( V + E)
+/*
+Why topsort works here?
+cause I have to start from a specific source node. I wanna make sure that no other nodes come before the souce node in ordering. by doing that, we can start calculating distance from the source node by poping out stack. cause stack top is the source node.
+*/
